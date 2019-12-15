@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>搜你所想</title>
+</head>
+<link rel="stylesheet" href="static/css/index.css">
+<link rel="stylesheet" href="static/css/video.css">
+<style>
+    #my-player {
+        text-align: center; /*让div内部文字居中*/
+        border-radius: 20px;
+        background-color: transparent;
+        width: 50%;
+        height: 55%;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+</style>
+<body style="background-image: url('static/imgs/bg.jpg')">
+<div id="app">
+    <template>
+        <video v-if="url"
+               id="my-player"
+               class="video-js"
+               controls
+               preload="auto"
+               data-setup='{}'>
+            <source :src="url" type="video/mp4"></source>
+        </video>
+        <h1 v-else>播放地址错误</h1>
+    </template>
+</div>
+</body>
+</html>
+<script src="static/js/vue.min.js"></script>
+<script src="static/js/index.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/video.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            name: "",
+            url: ""
+        },
+        methods: {
+            err: function (msg) {
+                this.$notify({
+                    title: '出错了~',
+                    message: msg,
+                });
+            },
+            success: function (msg) {
+                this.$notify({
+                    title: '提示~',
+                    message: msg,
+                });
+            },
+        },
+        mounted: function () {
+            var url = localStorage.getItem("video_url");
+            var name = localStorage.getItem("video_name");
+            if (url == "" || url == "null") {
+                return
+            }
+            this.url = url
+            document.title = name;
+            this.name = name
+        }
+    })
+</script>
